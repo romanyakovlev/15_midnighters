@@ -10,7 +10,7 @@ def load_attempts():
     for page in range(pages):
         get_params = {"page": page+1}
         users_data = requests.get("http://devman.org/api/challenges/solution_attempts/",
-                                                 params=get_params).json()
+                                  params=get_params).json()
         for user in users_data["records"]:
             yield {
                 'username': user["username"],
