@@ -4,6 +4,7 @@ import datetime
 from datetime import datetime
 from pytz import timezone
 
+
 def load_attempts():
     request_data = requests.get("http://devman.org/api/challenges/solution_attempts/").json()
     pages = request_data["number_of_pages"]
