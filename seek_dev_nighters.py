@@ -6,22 +6,27 @@ from pytz import timezone
 
 
 def load_attempts():
-    page = 1
-    get_params = {"page": page}
+    first_page = 1
+    get_params = {"page": first_page}
     users_data = requests.get("http://devman.org/api/challenges/solution_attempts/",
                               params=get_params).json()
     pages = users_data["number_of_pages"]
-    first_page = 1
+    for user in users_data["records"]:
+            yield {
+                'username': user["username"],
+                'timestamp': user["timestamp"],
+                'timezone': user["timezone"],
+            }
     for page in range(first_page, pages):
+        get_params = {"page": page+1}
+        users_data = requests.get("http://devman.org/api/challenges/solution_attempts/",
+                                  params=get_params).json()
         for user in users_data["records"]:
             yield {
                 'username': user["username"],
                 'timestamp': user["timestamp"],
                 'timezone': user["timezone"],
             }
-        get_params = {"page": page+1}
-        users_data = requests.get("http://devman.org/api/challenges/solution_attempts/",
-                                  params=get_params).json()
 
 
 def get_midnighters():
